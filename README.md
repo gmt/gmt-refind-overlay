@@ -14,6 +14,14 @@ so long as you pick only from those four...
 Furthermore: only one percieved culprit is allowed at a time.  But you
 can always change your mind later.
 
+To add this overlay to a Gentoo system, install layman
+and run the following command as root:
+
+```bash
+wget https://raw.github.com/gmt/gmt-refind-overlay/master/gmt-refind.xml -O /etc/layman/overlays/gmt-refind.xml
+layman -a gmt-refind
+```
+
 GL!
 
 gmt@be-evil.net
