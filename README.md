@@ -19,4 +19,4 @@ GL!
 gmt@be-evil.net
 
 P.S.:
-It should safe to treat all these ebuilds as GPLv2. But IANAL etc.
+It should be safe to treat all these ebuilds as GPLv2. But IANAL etc.
