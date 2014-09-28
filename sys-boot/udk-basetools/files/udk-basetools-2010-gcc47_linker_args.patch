@@ -1,0 +1,12 @@
+diff -urpN udk-basetools-2010.1.1.1.orig/BaseTools/Conf/tools_def.template udk-basetools-2010.1.1.1/BaseTools/Conf/tools_def.template
+--- udk-basetools-2010.1.1.1.orig/BaseTools/Conf/tools_def.template	2014-05-03 20:32:10.591303939 -0700
++++ udk-basetools-2010.1.1.1/BaseTools/Conf/tools_def.template	2014-05-03 20:37:59.680796130 -0700
+@@ -2859,7 +2859,7 @@ DEFINE GCC46_ASM_FLAGS               = D
+ 
+ *_GCC46_X64_ASLCC_FLAGS          = DEF(GCC_ASLCC_FLAGS) -m64
+ *_GCC46_X64_ASLDLINK_FLAGS       = DEF(GCC46_IA32_X64_ASLDLINK_FLAGS) -m elf_x86_64
+-*_GCC46_X64_ASM_FLAGS            = DEF(GCC46_ASM_FLAGS) -m64 -melf_x86_64
++*_GCC46_X64_ASM_FLAGS            = DEF(GCC46_ASM_FLAGS) -m64 -Wl,-melf_x86_64
+ *_GCC46_X64_CC_FLAGS             = DEF(GCC46_X64_CC_FLAGS)
+ *_GCC46_X64_DLINK_FLAGS          = DEF(GCC46_X64_DLINK_FLAGS)
+ *_GCC46_X64_RC_FLAGS             = DEF(GCC_X64_RC_FLAGS)

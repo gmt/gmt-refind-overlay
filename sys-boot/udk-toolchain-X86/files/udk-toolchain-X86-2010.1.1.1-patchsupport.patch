@@ -1,0 +1,85 @@
+Binary files udk-toolchain-20140321.orig/.mingw-gcc-build.py.swp and udk-toolchain-20140321/.mingw-gcc-build.py.swp differ
+diff -urpN udk-toolchain-20140321.orig/mingw-gcc-build.py udk-toolchain-20140321/mingw-gcc-build.py
+--- udk-toolchain-20140321.orig/mingw-gcc-build.py	2014-04-29 16:38:44.975976964 -0700
++++ udk-toolchain-20140321/mingw-gcc-build.py	2014-04-29 18:43:32.610178794 -0700
+@@ -366,6 +366,7 @@ class Extracter:
+         src = self.config.src_dir
+         extractDst = os.path.join(src, self.config.arch)
+         local_file = os.path.join(src, self.source_files.GetFilenameOf(module))
++        patchSrc = os.path.join(self.config.base_dir, 'patches', module)
+         moduleMd5 = self.source_files.GetMd5Of(module)
+         extracted = os.path.join(extractDst, os.path.split(local_file)[1] + '.extracted')
+         if not os.path.exists(extractDst):
+@@ -379,11 +380,72 @@ class Extracter:
+             print 'Extracting %s:' % self.config.Relative(local_file)
+             tar = tarfile.open(local_file)
+             tar.extractall(extractDst)
++            if os.path.exists(patchSrc):
++                extractDir = self.source_files.GetExtractDirOf(module)
++                patchDst = os.path.realpath(os.path.join('src', self.config.arch, extractDir))
++                for patchFile in sorted([
++                        f for f in os.listdir(patchSrc)
++                        if os.path.isfile(os.path.join(patchSrc,f))
++                ]):
++                    self.ApplyPatch(patchDst, os.path.join(patchSrc,patchFile))
+             open(extracted, 'w').write(moduleMd5)
+         else:
+             pass
+             #print 'Previously extracted', self.config.Relative(local_file)
+ 
++    def ApplyPatch(self, basedir, patchFile):
++
++        def patchrun(cmd, basedir, patchFile, dryrun=False):
++            if dryrun:
++                cmd = cmd + ('--dry-run', '-s',)
++            patchFile = open(patchFile, "r")
++            patchContent = patchFile.read();
++            patchFile.close()
++            sys.stdout.flush()
++            print('[running: "%s"]' % ' '.join(cmd))
++            p = subprocess.Popen(cmd, cwd=basedir, stdout=subprocess.PIPE,
++            	stderr=subprocess.STDOUT, stdin=subprocess.PIPE)
++            p.stdin.write(patchContent)
++            p.stdin.close()
++            output = p.stdout.read()
++            if not dryrun:
++                print(output)
++            if p.wait() != 0:
++                print('[patch did not apply]')
++                rslt = False
++            else:
++                if dryrun:
++                    print('[patch tested OK]')
++                else:
++                    print('[patch applied successfully]')
++                rslt = True
++            p.stdout.close()
++            p.stdin.close()
++            return rslt
++
++        print('[applying %s to %s]' % (self.config.Relative(patchFile), self.config.Relative(basedir)))
++        myrslt = False
++        for pl in range(0,4):
++            cmd = (
++                'patch',
++                '-p%s' % pl,
++                '--read-only=fail',
++                '-N',
++                '-r -',
++                '--no-backup-if-mismatch',
++                '-f',
++            )
++            if patchrun(cmd, basedir, patchFile, dryrun=True):
++                if patchrun(cmd, basedir, patchFile):
++                    myrslt = True
++                    break
++                else:
++                    exit('Patch %s unexpectedly failed in %s.  bleh, ugly corner case not handled.' % (patchFile, basedir))
++        if not myrslt:
++            exit('Could not figure out how to apply patch %s in %s.' % (patchFile, basedir))
++
++        print('[successfully applied]')
++
+     def ExtractAll(self):
+         for module in self.source_files.GetModules():
+             self.Extract(module)

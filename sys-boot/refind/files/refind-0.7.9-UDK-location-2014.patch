@@ -1,0 +1,36 @@
+diff -urpN refind-0.7.9.orig/Make.tiano refind-0.7.9/Make.tiano
+--- refind-0.7.9.orig/Make.tiano	2014-05-03 21:40:23.243226619 -0700
++++ refind-0.7.9/Make.tiano	2014-05-03 21:38:31.649335751 -0700
+@@ -29,7 +29,7 @@ ifeq ($(ARCH),x86_64)
+   LD_CODE = elf_x86_64
+ endif
+ 
+-EDK2BASE = /usr/local/UDK2010/MyWorkSpace
++EDK2BASE = /opt/UDK2014
+ #EDK2BASE = /usr/local/EDK2/tianocore-edk2
+ 
+ # Below file defines TARGET (RELEASE or DEBUG) and TOOL_CHAIN_TAG (GCC44, GCC45, GCC46, or GCC47)
+diff -urpN refind-0.7.9.orig/filesystems/Make.tiano refind-0.7.9/filesystems/Make.tiano
+--- refind-0.7.9.orig/filesystems/Make.tiano	2014-05-03 21:40:23.243226619 -0700
++++ refind-0.7.9/filesystems/Make.tiano	2014-05-03 21:38:31.649335751 -0700
+@@ -29,7 +29,7 @@ ifeq ($(ARCH),x86_64)
+   LD_CODE = elf_x86_64
+ endif
+ 
+-EDK2BASE = /usr/local/UDK2010/MyWorkSpace
++EDK2BASE = /opt/UDK2014
+ #EDK2BASE = /usr/local/edk2
+ 
+ # Below file defines TARGET (RELEASE or DEBUG) and TOOL_CHAIN_TAG (GCC44, GCC45, or GCC46)
+diff -urpN refind-0.7.9.orig/gptsync/Make.tiano refind-0.7.9/gptsync/Make.tiano
+--- refind-0.7.9.orig/gptsync/Make.tiano	2013-05-09 20:48:08.000000000 -0700
++++ refind-0.7.9/gptsync/Make.tiano	2014-05-03 21:56:17.186663934 -0700
+@@ -29,7 +29,7 @@ ifeq ($(ARCH),x86_64)
+   LD_CODE = elf_x86_64
+ endif
+ 
+-EDK2BASE = /usr/local/UDK2010/MyWorkSpace
++EDK2BASE = /opt/UDK2014
+ #EDK2BASE = /usr/local/edk2
+ 
+ # Below file defines TARGET (RELEASE or DEBUG) and TOOL_CHAIN_TAG (GCC44, GCC45, or GCC46)

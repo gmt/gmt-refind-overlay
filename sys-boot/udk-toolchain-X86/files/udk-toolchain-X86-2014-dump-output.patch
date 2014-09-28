@@ -1,0 +1,33 @@
+diff -urpN udk-toolchain-20140321.orig/mingw-gcc-build.py udk-toolchain-20140321/mingw-gcc-build.py
+--- udk-toolchain-20140321.orig/mingw-gcc-build.py	2014-04-29 05:06:29.651008211 -0700
++++ udk-toolchain-20140321/mingw-gcc-build.py	2014-04-29 05:07:34.885386331 -0700
+@@ -471,23 +471,21 @@ class Builder:
+             subprocess.Popen(
+                 cmd,
+                 stdin=subprocess.PIPE,
+-                stdout=subprocess.PIPE,
+                 stderr=subprocess.STDOUT
+                 )
+ 
+         print '%s [%s] ...' % (module, stage),
+         sys.stdout.flush()
+         p = popen(cmd)
+-        output = p.stdout.read()
++        # output = p.stdout.read()
+         p.wait()
+         if p.returncode != 0:
+             print '[failed!]'
+-            logFile = os.path.join(self.config.build_dir, 'log.txt')
+-            f = open(logFile, "w")
+-            f.write(output)
+-            f.close()
+-            raise Exception, 'Failed to %s %s\n' % (stage, module) + \
+-                'See output log at %s' % self.config.Relative(logFile)
++            # logFile = os.path.join(self.config.build_dir, 'log.txt')
++            # f = open(logFile, "w")
++            # f.write(output)
++            # f.close()
++            raise Exception, 'Failed to %s %s\n' % (stage, module)
+         else:
+             print '[done]'
+ 

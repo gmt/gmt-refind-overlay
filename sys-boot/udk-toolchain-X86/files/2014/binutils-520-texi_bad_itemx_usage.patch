@@ -1,0 +1,83 @@
+diff -urpN binutils-2.20.51.0.5.orig/binutils/doc/binutils.texi binutils-2.20.51.0.5/binutils/doc/binutils.texi
+--- binutils-2.20.51.0.5.orig/binutils/doc/binutils.texi	2010-01-15 09:05:49.000000000 -0800
++++ binutils-2.20.51.0.5/binutils/doc/binutils.texi	2014-04-30 01:06:19.193011055 -0700
+@@ -4147,17 +4147,17 @@ machine types.
+ 
+ The supported ELF machine types are, @var{L1OM} and @var{x86-64}.
+ 
+-@itemx --output-mach=@var{machine}
++@item --output-mach=@var{machine}
+ Change the ELF machine type in the ELF header to @var{machine}.  The
+ supported ELF machine types are the same as @option{--input-mach}.
+ 
+-@itemx --input-type=@var{type}
++@item --input-type=@var{type}
+ Set the matching input ELF file type to @var{type}.  If
+ @option{--input-type} isn't specified, it will match any ELF file types.
+ 
+ The supported ELF file types are, @var{rel}, @var{exec} and @var{dyn}.
+ 
+-@itemx --output-type=@var{type}
++@item --output-type=@var{type}
+ Change the ELF file type in the ELF header to @var{type}.  The
+ supported ELF types are the same as @option{--input-type}.
+ 
+diff -urpN binutils-2.20.51.0.5.orig/gas/doc/c-mips.texi binutils-2.20.51.0.5/gas/doc/c-mips.texi
+--- binutils-2.20.51.0.5.orig/gas/doc/c-mips.texi	2009-11-11 08:52:56.000000000 -0800
++++ binutils-2.20.51.0.5/gas/doc/c-mips.texi	2014-04-30 01:52:48.109461034 -0700
+@@ -201,10 +201,10 @@ the @samp{mad} and @samp{madu} instructi
+ instructions around accesses to the @samp{HI} and @samp{LO} registers.
+ @samp{-no-m4650} turns off this option.
+ 
+-@itemx -m3900
+-@itemx -no-m3900
+-@itemx -m4100
+-@itemx -no-m4100
++@item -m3900
++@item -no-m3900
++@item -m4100
++@item -no-m4100
+ For each option @samp{-m@var{nnnn}}, generate code for the MIPS
+ @sc{r@var{nnnn}} chip.  This tells the assembler to accept instructions
+ specific to that chip, and to schedule for that chip's hazards.
+diff -urpN binutils-2.20.51.0.5.orig/gas/doc/c-score.texi binutils-2.20.51.0.5/gas/doc/c-score.texi
+--- binutils-2.20.51.0.5.orig/gas/doc/c-score.texi	2009-03-10 10:29:13.000000000 -0700
++++ binutils-2.20.51.0.5/gas/doc/c-score.texi	2014-04-30 01:54:47.548401728 -0700
+@@ -36,7 +36,7 @@ implicitly with the @code{gp} register.
+ @item -EB
+ Assemble code for a big-endian cpu
+ 
+-@itemx -EL
++@item -EL
+ Assemble code for a little-endian cpu
+ 
+ @item -FIXDD 
+@@ -48,13 +48,13 @@ Assemble code for no warning message for
+ @item -SCORE5
+ Assemble code for target is SCORE5
+ 
+-@itemx -SCORE5U
++@item -SCORE5U
+ Assemble code for target is SCORE5U
+ 
+-@itemx -SCORE7
++@item -SCORE7
+ Assemble code for target is SCORE7, this is default setting
+ 
+-@itemx -SCORE3
++@item -SCORE3
+ Assemble code for target is SCORE3
+ 
+ @item -march=score7
+diff -urpN binutils-2.20.51.0.5.orig/gas/doc/c-tic54x.texi binutils-2.20.51.0.5/gas/doc/c-tic54x.texi
+--- binutils-2.20.51.0.5.orig/gas/doc/c-tic54x.texi	2014-04-30 01:47:25.717314939 -0700
++++ binutils-2.20.51.0.5/gas/doc/c-tic54x.texi	2014-04-30 01:55:41.460923236 -0700
+@@ -344,7 +344,7 @@ Assign @var{name} the string @var{string
+ performed on @var{string} before assignment.
+ 
+ @cindex @code{eval} directive, TIC54X
+-@itemx .eval @var{string}, @var{name}
++@item .eval @var{string}, @var{name}
+ Evaluate the contents of string @var{string} and assign the result as a
+ string to the subsym @var{name}.  String replacement is performed on
+ @var{string} before assignment. 

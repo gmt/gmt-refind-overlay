@@ -1,0 +1,66 @@
+diff -urpN refind-0.8.3.orig/filesystems/Make.tiano refind-0.8.3/filesystems/Make.tiano
+--- refind-0.8.3.orig/filesystems/Make.tiano	2014-05-18 07:42:52.000000000 -0700
++++ refind-0.8.3/filesystems/Make.tiano	2014-09-25 15:43:43.783047203 -0700
+@@ -29,7 +29,7 @@ ifeq ($(ARCH),x86_64)
+   LD_CODE = elf_x86_64
+ endif
+ 
+-EDK2BASE = /usr/local/UDK2014/MyWorkSpace
++EDK2BASE = @GENTOO_PORTAGE_EPREFIX@/opt/UDK2014
+ #EDK2BASE = /usr/local/edk2
+ 
+ # Below file defines TARGET (RELEASE or DEBUG) and TOOL_CHAIN_TAG (GCC44, GCC45, or GCC46)
+@@ -64,7 +64,8 @@ OPTIMFLAGS      = -fno-strict-aliasing -
+ DEBUGFLAGS      = -Wall -Wno-missing-braces -Wno-array-bounds -ffunction-sections -fdata-sections
+ CFLAGS          = $(OPTIMFLAGS) -g -fshort-wchar -fno-stack-protector $(DEBUGFLAGS) -c -include AutoGen.h -DHOST_EFI_EDK2
+ 
+-prefix          = /usr/bin/
++eprefix		= @GENTOO_PORTAGE_EPREFIX@
++prefix          = $(eprefix)/usr/bin/
+ CC              = $(prefix)gcc
+ AS              = $(prefix)as
+ LD              = $(prefix)ld
+diff -urpN refind-0.8.3.orig/gptsync/Make.tiano refind-0.8.3/gptsync/Make.tiano
+--- refind-0.8.3.orig/gptsync/Make.tiano	2014-05-18 07:43:21.000000000 -0700
++++ refind-0.8.3/gptsync/Make.tiano	2014-09-25 15:43:40.402093637 -0700
+@@ -29,7 +29,7 @@ ifeq ($(ARCH),x86_64)
+   LD_CODE = elf_x86_64
+ endif
+ 
+-EDK2BASE = /usr/local/UDK2014/MyWorkSpace
++EDK2BASE = @GENTOO_PORTAGE_EPREFIX@/opt/UDK2014
+ #EDK2BASE = /usr/local/edk2
+ 
+ # Below file defines TARGET (RELEASE or DEBUG) and TOOL_CHAIN_TAG (GCC44, GCC45, or GCC46)
+@@ -71,7 +71,8 @@ DEBUGFLAGS      = -Wall -Wno-missing-bra
+ CFLAGS          = $(OPTIMFLAGS) -g -fshort-wchar -fno-stack-protector $(DEBUGFLAGS) -c -DHOST_EFI_EDK2 -D__MAKEWITH_TIANO
+ #CFLAGS          = $(OPTIMFLAGS) -g -fshort-wchar -fno-stack-protector $(DEBUGFLAGS) -c -include AutoGen.h -DHOST_EFI_EDK2
+ 
+-prefix          = /usr/bin/
++eprefix		= @GENTOO_PORTAGE_EPREFIX@
++prefix          = $(eprefix)/usr/bin/
+ CC              = $(prefix)gcc
+ AS              = $(prefix)as
+ LD              = $(prefix)ld
+diff -urpN refind-0.8.3.orig/Make.tiano refind-0.8.3/Make.tiano
+--- refind-0.8.3.orig/Make.tiano	2014-05-18 07:37:09.000000000 -0700
++++ refind-0.8.3/Make.tiano	2014-09-25 15:44:08.730707087 -0700
+@@ -29,7 +29,7 @@ ifeq ($(ARCH),x86_64)
+   LD_CODE = elf_x86_64
+ endif
+ 
+-EDK2BASE = /usr/local/UDK2014/MyWorkSpace
++EDK2BASE = @GENTOO_PORTAGE_EPREFIX@/opt/UDK2014
+ #EDK2BASE = /usr/local/EDK2/tianocore-edk2
+ #ENTRYPOINT=_ModuleEntryPoint
+ ENTRYPOINT=efi_main
+@@ -53,7 +53,8 @@ OPTIMFLAGS      = -fno-strict-aliasing -
+ DEBUGFLAGS      = -Wall -Wno-missing-braces -Wno-array-bounds -ffunction-sections -fdata-sections
+ CFLAGS          = $(OPTIMFLAGS) -g -fshort-wchar -fno-stack-protector $(DEBUGFLAGS) -c
+ 
+-prefix          = /usr/bin/
++eprefix		= @GENTOO_PORTAGE_EPREFIX@
++prefix          = $(eprefix)/usr/bin/
+ CC              = $(prefix)gcc
+ AS              = $(prefix)as
+ LD              = $(prefix)ld

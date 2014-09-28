@@ -1,0 +1,180 @@
+diff -Nurp udk-toolchain-20140321.orig/mingw-gcc-build.py udk-toolchain-20140321/mingw-gcc-build.py
+--- udk-toolchain-20140321.orig/mingw-gcc-build.py	2014-04-30 12:44:44.286891938 -0700
++++ udk-toolchain-20140321/mingw-gcc-build.py	2014-04-30 12:52:39.545019144 -0700
+@@ -78,13 +78,25 @@ class Config:
+             "--src-dir",
+             action = "store", type = "string", dest = "src_dir",
+             default = os.path.join(self.base_dir, 'src'),
+-            help = "Directory to download/extract binutils/gcc sources"
++            help = "Directory to locate/extract binutils/gcc sources"
++            )
++        Parser.add_option(
++            "--patch-dir",
++            action = "store", type = "string", dest = "patch_dir",
++            default = os.path.join(self.base_dir, 'patches'),
++            help = "Directory from which to apply binutils/gcc patches (after extraction, from per-module subdirs)"
++            )
++        Parser.add_option(
++            "--destdir",
++            action = "store", type = "string", dest = "destdir",
++            default = '',
++            help = "Fake root directory into which to install files"
+             )
+         Parser.add_option(
+             "--build-dir",
+             action = "store", type = "string", dest = "build_dir",
+             default = os.path.join(self.base_dir, 'build'),
+-            help = "Directory to download/extract binutils/gcc sources"
++            help = "Directory to locate/extract binutils/gcc sources"
+             )
+         Parser.add_option(
+             "--prefix",
+@@ -115,6 +127,12 @@ class Config:
+             action="store_true",
+             type=None, help="Print verbose messages"
+             )
++        Parser.add_option(
++            "--makeopts",
++            action = "store", type = "string", dest = "makeopts",
++            default = '',
++            help = "Extra options to supply to make commands"
++            )
+ 
+         (Opt, Args) = Parser.parse_args()
+ 
+@@ -134,6 +152,8 @@ class Config:
+ 
+     def __init_dirs__(self):
+         self.src_dir = os.path.realpath(os.path.expanduser(self.options.src_dir))
++        self.patch_dir = os.path.realpath(os.path.expanduser(self.options.patch_dir))
++        self.destdir = '' if self.options.destdir == '' else os.path.realpath(os.path.expanduser(self.options.destdir))
+         self.build_dir = os.path.realpath(os.path.expanduser(self.options.build_dir))
+         self.prefix = os.path.realpath(os.path.expanduser(self.options.prefix))
+         self.symlinks = os.path.realpath(os.path.expanduser(self.options.symlinks))
+@@ -153,7 +173,9 @@ class Config:
+ 
+         print "Current directory:"
+         print "   ", self.base_dir
+-        print "Sources download/extraction:", self.Relative(self.src_dir)
++        print "Sources extraction         :", self.Relative(self.src_dir)
++        print "Patches directory          :", self.Relative(self.patch_dir)
++        print "DESTDIR                    :", self.Relative(self.destdir)
+         print "Build directory            :", self.Relative(self.build_dir)
+         print "Prefix (install) directory :", self.Relative(self.prefix)
+         print "Create symlinks directory  :", self.Relative(self.symlinks)
+@@ -185,14 +207,23 @@ class Config:
+         return path
+ 
+     def MakeDirs(self):
+-        for path in (self.src_dir, self.build_dir,self.prefix, self.symlinks):
++        if self.destdir != '':
++            if self.prefix.startswith(os.path.sep):
++                dd = os.path.join(self.destdir, self.prefix[len(os.path.sep):])
++            else:
++                dd = os.path.join(self.destdir, self.prefix)
++        else:
++            dd = self.prefix
++        paths = (self.src_dir, self.build_dir, self.symlinks, dd)
++        for path in paths:
++            print('ensuring path exists: %s' % path)
+             if not os.path.exists(path):
+                 os.makedirs(path)
+ 
+ class SourceFiles:
+     """class SourceFiles
+ 
+-    Handles the downloading of source files used by the script.
++    Handles the checking of source files used by the script.
+     """
+ 
+     def __init__(self, config):
+@@ -245,8 +272,8 @@ class SourceFiles:
+         mergedSourceFiles = {}
+         for source_files_dict in source_files[arch]:
+             mergedSourceFiles.update(source_files_dict)
+-        for downloadItem in mergedSourceFiles:
+-            fdata = mergedSourceFiles[downloadItem]
++        for checkItem in mergedSourceFiles:
++            fdata = mergedSourceFiles[checkItem]
+             fdata['filename'] = fdata['url'].split('/')[-1]
+             if 'extract-dir' not in fdata:
+                 for ext in ('.tar.gz', '.tar.bz2', '.zip'):
+@@ -285,8 +312,8 @@ class SourceFiles:
+                 try:
+                     self.dots = 0
+                     local_file = os.path.join(self.config.src_dir, fdata['filename'])
+-                    url = fdata['url']
+-                    print 'Downloading %s:' % fname, url
++                    # url = fdata['url']
++                    print 'Verifying %s:' % fname
+                     if retries > 0:
+                         print '(retry)',
+                     sys.stdout.flush()
+@@ -299,13 +326,9 @@ class SourceFiles:
+                         else:
+                             print '[md5 mismatch]',
+                             print '[failed]'
+-                            print '  Tried to retrieve', url
+                             print '  to', local_file
+-                            print 'Possible fixes:'
+-                            print '* If you are behind a web-proxy, try setting the',
+-                            print 'http_proxy environment variable'
+-                            print '* You can try to download this file separately',
+-                            print 'and rerun this script'
++                            print 'Possible fix:'
++                            print '* Download the file manually and rerun this script'
+                             raise Exception()
+                         sys.stdout.flush()
+                         completed = md5_pass
+@@ -354,7 +377,7 @@ class SourceFiles:
+ class Extracter:
+     """class Extracter
+ 
+-    Handles the extraction of the source files from their downloaded
++    Handles the extraction of the source files from their
+     archive files.
+     """
+ 
+@@ -366,7 +389,7 @@ class Extracter:
+         src = self.config.src_dir
+         extractDst = os.path.join(src, self.config.arch)
+         local_file = os.path.join(src, self.source_files.GetFilenameOf(module))
+-        patchSrc = os.path.join(self.config.base_dir, 'patches', module)
++        patchSrc = os.path.join(self.config.patch_dir, module)
+         moduleMd5 = self.source_files.GetMd5Of(module)
+         extracted = os.path.join(extractDst, os.path.split(local_file)[1] + '.extracted')
+         if not os.path.exists(extractDst):
+@@ -509,11 +532,21 @@ class Builder:
+         self.RunCommand(cmd, module, 'config', skipable=True)
+ 
+         cmd = ('make',)
++
++        if self.config.options.makeopts != '':
++            cmd = cmd + tuple(self.config.options.makeopts.split(' '))
++
+         if module == 'gcc':
+             cmd += ('all-gcc',)
+         self.RunCommand(cmd, module, 'build')
+ 
+         cmd = ('make',)
++
++        if self.config.options.makeopts != '':
++            cmd = cmd + tuple(self.config.options.makeopts.split(' ')) + ('-j1',)
++        if self.config.options.destdir != '':
++            cmd = cmd + ('DESTDIR=%s' % self.config.options.destdir,)
++
+         if module == 'gcc':
+             cmd += ('install-gcc',)
+         else:
+@@ -591,9 +624,9 @@ class App:
+         sources = SourceFiles(config)
+         result = sources.GetAll()
+         if result:
+-            print 'All files have been downloaded & verified'
++            print 'All files have been verified'
+         else:
+-            print 'An error occured while downloading a file'
++            print 'An error occured while verifying a file'
+             return
+ 
+         Extracter(sources, config).ExtractAll()

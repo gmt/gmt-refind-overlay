@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<herd>maintainer-wanted</herd>
+<use>
+        <flag name=fsdrivers>
+                Build and install the filesystem drivers
+        </flag>
+        <flag name=tianocore>
+                Use sys-boot/ed2k instead of sys-boot/gnu-efi to build.
+        </flag>
+</use>
+</pkgmetadata>

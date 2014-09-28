@@ -1,0 +1,20 @@
+https://bugs.gentoo.org/305739
+
+fix random parallel build issues in sparseset.c.  upstream has this in a much
+larger general commit (svn rev 137792), so use just the small piece that we
+keep hitting issues with.
+
+patch by Israel G. Lugo
+
+--- gcc-4.3/gcc/Makefile.in
++++ gcc-4.3/gcc/Makefile.in
+@@ -1789,7 +1789,7 @@
+     $(FLAGS_H) hard-reg-set.h $(BASIC_BLOCK_H) $(OBSTACK_H)
+ ebitmap.o: ebitmap.c $(CONFIG_H) $(SYSTEM_H) coretypes.h $(TM_H) \
+ 	$(EBITMAP_H)
+-sparseset.o: sparseset.c $(SYSTEM_H) sparseset.h
++sparseset.o: sparseset.c $(SYSTEM_H) sparseset.h $(CONFIG_H)
+ 
+ COLLECT2_OBJS = collect2.o tlink.o intl.o version.o
+ COLLECT2_LIBS = @COLLECT2_LIBS@
+

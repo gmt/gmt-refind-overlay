@@ -1,0 +1,22 @@
+diff -urpN gcc-4.3.0.orig/gcc/doc/extend.texi gcc-4.3.0/gcc/doc/extend.texi
+--- gcc-4.3.0.orig/gcc/doc/extend.texi  2008-02-17 10:52:04.000000000 -0800
++++ gcc-4.3.0/gcc/doc/extend.texi       2014-04-30 02:38:34.649395984 -0700
+@@ -4224,7 +4224,7 @@ and caught in another, the class must ha
+ Otherwise the two shared objects will be unable to use the same
+ typeinfo node and exception handling will break.
+ 
+-@subsection ARM Type Attributes
++@subheading ARM Type Attributes
+ 
+ On those ARM targets that support @code{dllimport} (such as Symbian
+ OS), you can use the @code{notshared} attribute to indicate that the
+@@ -4248,7 +4248,7 @@ virtual table for @code{C} is not export
+ most Symbian OS code uses @code{__declspec}.)
+ 
+ @anchor{i386 Type Attributes}
+-@subsection i386 Type Attributes
++@subheading i386 Type Attributes
+ 
+ Two attributes are currently defined for i386 configurations:
+ @code{ms_struct} and @code{gcc_struct}
+
