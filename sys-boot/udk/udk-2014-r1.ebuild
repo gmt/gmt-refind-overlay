@@ -37,7 +37,7 @@ KEYWORDS="~amd64"
 IUSE="debug"
 
 RDEPEND="${PYHON_DEPS}
-	sys-boot/udk-basetools:${UDK_SLOT}
+	>=sys-boot/udk-basetools-2014-r1:${UDK_SLOT}
 	sys-power/iasl"
 DEPEND="${DEPEND}
 	app-arch/unzip"
