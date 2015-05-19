@@ -1,0 +1,51 @@
+diff -urpN udk-2014.orig/MyWorkSpace/MdeModulePkg/Universal/DebugSupportDxe/X64/AsmFuncs.S udk-2014/MyWorkSpace/MdeModulePkg/Universal/DebugSupportDxe/X64/AsmFuncs.S
+--- udk-2014.orig/MyWorkSpace/MdeModulePkg/Universal/DebugSupportDxe/X64/AsmFuncs.S	2015-05-19 12:23:00.736718338 -0700
++++ udk-2014/MyWorkSpace/MdeModulePkg/Universal/DebugSupportDxe/X64/AsmFuncs.S	2015-05-19 12:36:26.380645886 -0700
+@@ -280,7 +280,7 @@ ExtraPushDone:
+ 
+                 mov     %ds, %rax
+                 pushq   %rax
+-                movw    %es, %rax
++                mov     %es, %rax
+                 pushq   %rax
+                 mov     %fs, %rax
+                 pushq   %rax
+diff -urpN udk-2014.orig/MyWorkSpace/MdePkg/Library/BaseMemoryLibOptPei/X64/SetMem64.S udk-2014/MyWorkSpace/MdePkg/Library/BaseMemoryLibOptPei/X64/SetMem64.S
+--- udk-2014.orig/MyWorkSpace/MdePkg/Library/BaseMemoryLibOptPei/X64/SetMem64.S	2015-05-19 13:10:48.127431492 -0700
++++ udk-2014/MyWorkSpace/MdePkg/Library/BaseMemoryLibOptPei/X64/SetMem64.S	2015-05-19 13:13:18.533746097 -0700
+@@ -40,7 +40,7 @@ ASM_PFX(InternalMemSetMem64):
+     movq    %r8, %rax
+     xchgq   %rdx, %rcx
+     rep     stosq
+-    movw    %rdx, %rax
++    mov     %rdx, %rax
+     popq    %rdi
+     ret
+ 
+diff -urpN udk-2014.orig/MyWorkSpace/MdePkg/Library/BaseMemoryLibMmx/X64/SetMem64.S udk-2014/MyWorkSpace/MdePkg/Library/BaseMemoryLibMmx/X64/SetMem64.S
+--- udk-2014.orig/MyWorkSpace/MdePkg/Library/BaseMemoryLibMmx/X64/SetMem64.S	2015-05-19 13:18:08.532494953 -0700
++++ udk-2014/MyWorkSpace/MdePkg/Library/BaseMemoryLibMmx/X64/SetMem64.S	2015-05-19 13:22:45.075392890 -0700
+@@ -36,7 +36,7 @@
+ ASM_GLOBAL ASM_PFX(InternalMemSetMem64)
+ ASM_PFX(InternalMemSetMem64):
+     movd      %r8, %mm0                 #Value
+-    movw      %rcx, %rax                #rax <- Buffer
++    mov       %rcx, %rax                #rax <- Buffer
+     xchg      %rdx, %rcx                #rcx <- Count
+ L0:
+     movntq  %mm0, (%rdx) 
+diff -urpN udk-2014.orig/MyWorkSpace/SourceLevelDebugPkg/Library/DebugAgent/DebugAgentCommon/X64/AsmFuncs.S udk-2014/MyWorkSpace/SourceLevelDebugPkg/Library/DebugAgent/DebugAgentCommon/X64/AsmFuncs.S
+--- udk-2014.orig/MyWorkSpace/SourceLevelDebugPkg/Library/DebugAgent/DebugAgentCommon/X64/AsmFuncs.S	2015-05-19 13:24:05.131494571 -0700
++++ udk-2014/MyWorkSpace/SourceLevelDebugPkg/Library/DebugAgent/DebugAgentCommon/X64/AsmFuncs.S	2015-05-19 13:33:12.842345219 -0700
+@@ -385,9 +385,9 @@ NoExtrPush:
+   # mov     fs, rax ; not for fs
+   # (X64 will not use fs and gs, so we do not restore it)
+    popq     %rax
+-  movw    %rax, %es
++   mov      %rax, %es
+    popq     %rax
+-  movw    %rax, %ds
++   mov      %rax, %ds
+    popq     32(%rbp)
+    popq     56(%rbp)
+ 

@@ -93,6 +93,7 @@ src_prepare() {
 	einfo "injecting OpenSSL version ${OPENSSL_MYPV} in place of ${OPENSSL_THEIRPV}"
 	rm -rf "MyWorkSpace/CryptoPkg/Library/OpensslLib/openssl-${OPENSSL_THEIRPV}" || die
 	mv -v "openssl-${OPENSSL_MYPV}" "MyWorkSpace/CryptoPkg/Library/OpensslLib/openssl-${OPENSSL_THEIRPV}" || die
+	epatch ${FILESDIR}/${P}-recent-gas-fixes.patch
 	pushd "MyWorkSpace/CryptoPkg/Library/OpensslLib/openssl-${OPENSSL_THEIRPV}" >/dev/null || die
 	epatch ${FILESDIR}/openssl-0.9.8h-ldflags.patch
 	epatch ${FILESDIR}/openssl-0.9.8m-binutils.patch
