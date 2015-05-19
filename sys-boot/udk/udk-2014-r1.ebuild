@@ -72,8 +72,9 @@ src_unpack() {
 	mkdir -p "${S}" || die
 	cd "${S}" || die
 	default
-	einfo "Unpacking goofy nested archives..."
-	unzip "UDK${UDK_PV}.MyWorkSpace.zip"
+	ebegin "Unpacking goofy nested archives..."
+	unzip -q "UDK${UDK_PV}.MyWorkSpace.zip" || die
+	eend 0
 }
 
 src_prepare() {
