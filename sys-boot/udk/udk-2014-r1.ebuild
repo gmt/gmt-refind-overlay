@@ -78,7 +78,7 @@ src_unpack() {
 }
 
 src_prepare() {
-	einfo Converting dos-format text files to UNIX...
+	ebegin Converting dos-format text files to UNIX...
 	local f
 	find "${S}" -type f \
 		\( \
@@ -89,6 +89,7 @@ src_prepare() {
 			while read f ; do
 				edos2unix "${f}"
 			done
+	eend
 	einfo "injecting OpenSSL version ${OPENSSL_MYPV} in place of ${OPENSSL_THEIRPV}"
 	rm -rf "MyWorkSpace/CryptoPkg/Library/OpensslLib/openssl-${OPENSSL_THEIRPV}" || die
 	mv -v "openssl-${OPENSSL_MYPV}" "MyWorkSpace/CryptoPkg/Library/OpensslLib/openssl-${OPENSSL_THEIRPV}" || die
