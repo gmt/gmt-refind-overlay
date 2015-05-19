@@ -34,10 +34,10 @@ SRC_URI="${UDK_URI}
 	mirror://openssl/source/openssl-${OPENSSL_MYPV}.tar.gz"
 LICENSE="BSD-2"
 KEYWORDS="~amd64"
-IUSE="debug udk-toolchain"
+IUSE="debug"
 
 RDEPEND="${PYHON_DEPS}
-	sys-boot/udk-basetools:${UDK_SLOT}[udk-toolchain=]
+	sys-boot/udk-basetools:${UDK_SLOT}
 	sys-power/iasl"
 DEPEND="${DEPEND}
 	app-arch/unzip"
@@ -46,12 +46,6 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 RESTRICT="mirror strip splitdebug"
 QA_EXECSTACK='*.obj *.dll *.lib *.debug'
 QA_WX_LOAD='*.obj *.dll *.lib *.debug'
-
-pkg_setup() { 
-	use udk-toolchain && \
-		ewarn 'The udk-toolchain method of building is untested, so GL!'
-	python-single-r1_pkg_setup
-}
 
 src_unpack() {
 	mkdir -p "${S}" || die
@@ -101,10 +95,6 @@ setup_build_env() {
 	filter-flags '-g* -O3 -m*'
 	export {C,CXX,CPP,LD}FLAGS
 	tc-export AR AS CC CPP CXX LD NM PKG_CONFIG RANLIB
-	if use udk-toolchain; then
-		source "${EPREFIX}/opt/UDK${UDK_SLOT}/tc-env.sh"
-		udk${UDK_SLOT}_tc_select X64
-	fi
 	export WORKSPACE="${S}/MyWorkSpace"
 	cd "${WORKSPACE}"
 	export EDK_TOOLS_PATH="${EPREFIX}/opt/UDK${UDK_SLOT}/BaseTools"
@@ -123,18 +113,14 @@ src_configure() {
 	einfo "Resetting path changes from \"${PATH}\" to \"${SAVEPATH}\"."
 	export PATH="${SAVEPATH}"
 
-	if use udk-toolchain; then
-		set_conf_option tools_def 'DEFINE UNIXGCC_X64_PETOOLS_PREFIX' x86_64-pc-mingw32-
-		toolchaintag="UNIXGCC"
-	else
-		local gcc_majorminor=$(gcc-major-version)$(gcc-minor-version)
-		case ${gcc_majorminor} in
-			44|45|46|47|48|49) :;;
-			*) gcc_majorminor=48;;
-		esac
-		set_conf_option tools_def "DEFINE GCC${gcc_majorminor}_X64_PREFIX" ${CHOST}-
-		toolchaintag="GCC${gcc_majorminor}"
-	fi
+	local gcc_majorminor=$(gcc-major-version)$(gcc-minor-version)
+	case ${gcc_majorminor} in
+		44|45|46|47|48|49) :;;
+		*) gcc_majorminor=48;;
+	esac
+	set_conf_option tools_def "DEFINE GCC${gcc_majorminor}_X64_PREFIX" ${CHOST}-
+	toolchaintag="GCC${gcc_majorminor}"
+
 	set_conf_option target    TOOL_CHAIN_TAG                      ${toolchaintag}
 	set_conf_option tools_def 'DEFINE UNIX_IASL_BIN'              "${EPREFIX}/usr/bin/iasl"
 	set_conf_option target    TARGET_ARCH                         X64
