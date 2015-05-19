@@ -43,7 +43,7 @@ DEPEND="${DEPEND}
 	app-arch/unzip"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
-RESTRICT="strip splitdebug"
+RESTRICT="mirror strip splitdebug"
 QA_EXECSTACK='*.obj *.dll *.lib *.debug'
 QA_WX_LOAD='*.obj *.dll *.lib *.debug'
 
