@@ -17,7 +17,7 @@ IUSE="+fsdrivers udk"
 
 UDK_SLOT=2014
 
-DEPEND="udk? ( sys-boot/udk:${UDK_SLOT}[-udk-toolchain] ) !udk? ( sys-boot/gnu-efi )"
+DEPEND="udk? ( >=sys-boot/udk-2014-r1:${UDK_SLOT} ) !udk? ( sys-boot/gnu-efi )"
 RDEPEND="${DEPEND}"
 
 DOCS=( {COPYING,CREDITS,LICENSE,README,NEWS}.txt )
@@ -36,7 +36,6 @@ src_prepare() {
 	epatch "${FILESDIR}"/${PN}-0.8.3-UDK-location-${UDK_SLOT}.patch
 	eprefixify .{,/gptsync,/filesystems}/Make.tiano
 	if use udk && \
-		(! has_version "sys-boot/udk-basetools:${UDK_SLOT}[udk-toolchain]" ) && \
 		[[ $(gcc-major-version) == 4 && $(gcc-minor-version) -ge 9 ]]
 	then
 		sed -e 's|--script=\(.*\)/gcc4.4-ld-script|--script=\1/gcc4.9-ld-script|' \
@@ -49,10 +48,6 @@ src_configure() {
 	filter-flags '-g* -O3 -m*'
     export {C,CXX,CPP,LD}FLAGS
     tc-export AR AS CC CPP CXX LD NM PKG_CONFIG RANLIB
-	if has_version "sys-boot/udk-basetools:${UDK_SLOT}[udk-toolchain]"; then
-        source ${EPREFIX}/opt/UDK${UDK_SLOT}/tc-env.sh || die
-		udk${UDK_SLOT}_tc_select X64 --force
-	fi
     export EDK_TOOLS_PATH="${EPREFIX}/opt/UDK${UDK_SLOT}/BaseTools"
     export PATH="${EDK_TOOLS_PATH}/BinWrappers/PosixLike:${PATH}"
 	unset ARCH
