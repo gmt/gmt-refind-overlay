@@ -48,6 +48,22 @@ QA_EXECSTACK='*.obj *.dll *.lib *.debug'
 QA_WX_LOAD='*.obj *.dll *.lib *.debug'
 
 pkg_pretend() {
+	if [[ ${MERGE_TYPE} != buildonly ]] ; then
+		# When the caller already has the package installed in this slot, 
+		# assume they don't need any space... potentially flakey, but
+		# perhaps a useful kludge, for folks with small "/" partitions
+		if ( ! has_version ${CATEGORY}/${PN}:${SLOT} ) ; then
+			# Here I abuse private check-reqs API since it doesn't offer an
+			# in-built means to check for required space in /opt (which is
+			# reasonably likely to be in "/" for those so unfortunate
+			# as to have split-/usr systems).
+			ebegin "UDK is a hog. Checking space requirements in /opt"
+			unset CHECKREQS_FAILED
+			check-reqs_disk /opt 1G
+			check-reqs_output
+			unset CHECKREQS_FAILED
+		fi
+	fi
 	CHECKREQS_DISK_BUILD="2G"
 	check-reqs_pkg_pretend
 }
