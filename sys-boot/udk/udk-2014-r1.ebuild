@@ -7,7 +7,7 @@ EAPI=5
 PYTHON_COMPAT=( python2_7 )
 PYTHON_REQ_USE=sqlite
 
-inherit toolchain-funcs flag-o-matic versionator multiprocessing eutils python-single-r1
+inherit check-reqs toolchain-funcs flag-o-matic versionator multiprocessing eutils python-single-r1
 
 UDK_SLOT="$(get_major_version)"
 SLOT="${UDK_SLOT}"
@@ -46,6 +46,11 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 RESTRICT="mirror strip splitdebug"
 QA_EXECSTACK='*.obj *.dll *.lib *.debug'
 QA_WX_LOAD='*.obj *.dll *.lib *.debug'
+
+pkg_pretend() {
+	CHECKREQS_DISK_BUILD="2G"
+	check-reqs_pkg_pretend
+}
 
 src_unpack() {
 	mkdir -p "${S}" || die
