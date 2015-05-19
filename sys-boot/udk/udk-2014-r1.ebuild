@@ -73,7 +73,7 @@ src_unpack() {
 	cd "${S}" || die
 	default
 	ebegin "Unpacking goofy nested archives..."
-	unzip -q "UDK${UDK_PV}.MyWorkSpace.zip" || die
+	unzip -q "UDK${UDK_PV}.MyWorkSpace.zip" || { eend 1; die }
 	eend 0
 }
 
