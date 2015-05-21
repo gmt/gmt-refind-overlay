@@ -27,7 +27,7 @@ UDK_URI="mirror://sourceforge/edk2/UDK${UDK_SLOT}_Releases/UDK${UDK_PV}/${UDK_TA
 
 DESCRIPTION="Set of tools for processing UDK II content."
 HOMEPAGE="http://sourceforge.net/apps/mediawiki/tianocore/index.php?title=EDK2"
-SRC_URI="${UDK_TARBALL}"
+SRC_URI="${UDK_URI}"
 
 LICENSE="BSD-2"
 KEYWORDS="~amd64"
@@ -37,6 +37,8 @@ RDEPEND="${PYTHON_DEPS}"
 DEPEND="${RDEPEND}
 	app-arch/unzip"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
+
+RESTRICT="primaryuri"
 
 src_unpack() {
 	mkdir -p "${S}" || die
