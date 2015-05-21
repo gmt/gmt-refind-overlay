@@ -1,18 +1,19 @@
 gmt-refind-overlay
 ==================
 
-Portage overlay with the goodies (term perhaps loosely applied) needed
-to build the rEFInd (U)EFI bootloader
+Portage overlay with ebuilds for whatever the TianoCore EFI
+software development framework happens to be calling itself this
+year and rEFInd boot manager.
 
-Pretty sure some of this code was stolen from alkan6's "gentoo" repo,
-also found here on github.  And/or maybe from Gentoo bug #435960...
+Some of this code was inspired by alkan6's "gentoo" repo on github,
+and from various folks' contributions to Gentoo bug #435960.
 
-Feel free to blame me when it bricks your motherboard, or, the Tooth
-Fairy, or Pat Morita or Margaret Thatcher.  Entirely your choice,
-so long as you pick only from those four...
+It should be safe to treat the ebuilds as GPLv2.
 
-Furthermore: only one percieved culprit is allowed at a time.  But you
-can always change your mind later.
+Feel free to blame me if it bricks your motherboard or formats
+your hard-drive; you could also blame the Tooth Fairy, Pat Morita
+or Margaret Thatcher.  Entirely your choice, but please choose
+from only those four potential culprits.
 
 To add this overlay to a Gentoo system, install layman
 and run the following command as root:
@@ -22,9 +23,9 @@ wget https://raw.github.com/gmt/gmt-refind-overlay/master/gmt-refind.xml -O /etc
 layman -a gmt-refind
 ```
 
+(note: I have not tested the above recipe for a while, pull
+requests appreciated)
+
 GL!
 
-gmt@be-evil.net
-
 P.S.:
-It should be safe to treat all these ebuilds as GPLv2. But IANAL etc.
