@@ -37,13 +37,13 @@ KEYWORDS="~amd64"
 IUSE="debug"
 
 RDEPEND="${PYHON_DEPS}
-	>=sys-boot/udk-basetools-2014-r1:${UDK_SLOT}
+	=sys-boot/udk-basetools-2014-r1:${UDK_SLOT}
 	sys-power/iasl"
 DEPEND="${DEPEND}
 	app-arch/unzip"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
-RESTRICT="mirror strip splitdebug"
+RESTRICT="primaryuri strip splitdebug"
 QA_EXECSTACK='*.obj *.dll *.lib *.debug'
 QA_WX_LOAD='*.obj *.dll *.lib *.debug'
 
