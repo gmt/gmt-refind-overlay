@@ -22,7 +22,7 @@ RDEPEND="${DEPEND}"
 
 DOCS=( {COPYING,CREDITS,LICENSE,README,NEWS}.txt )
 
-RESTRICT="strip splitdebug"
+RESTRICT="primaryuri strip splitdebug"
 
 pkg_setup() {
 	if use udk; then
