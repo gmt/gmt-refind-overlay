@@ -101,18 +101,6 @@ src_prepare() {
 	epatch ${FILESDIR}/openssl-0.9.8h-ldflags.patch
 	epatch ${FILESDIR}/openssl-0.9.8m-binutils.patch
 	epatch ${FILESDIR}/openssl-0.9.8ze-CVE-2015-0286.patch
-	# disable fips in the build
-    # make sure the man pages are suffixed #302165
-    # don't bother building man pages if they're disabled
-    sed -i \
-        -e '/DIRS/s: fips : :g' \
-        -e '/^MANSUFFIX/s:=.*:=ssl:' \
-        -e '/^MAKEDEPPROG/s:=.*:=$(CC):' \
-        -e $(has noman FEATURES \
-            && echo '/^install:/s:install_docs::' \
-            || echo '/^MANDIR=/s:=.*:=/usr/share/man:') \
-        Makefile{,.org} \
-        || die
 	cd ..
 	sed -i Install.sh -i Install.cmd -i OpensslLib.inf -i Patch-HOWTO.txt \
 		-e "s/openssl-0.9.8zb/openssl-${OPENSSL_PV}/g" || \
